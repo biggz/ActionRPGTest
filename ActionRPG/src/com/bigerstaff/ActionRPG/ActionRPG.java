@@ -2,9 +2,11 @@ package com.bigerstaff.ActionRPG;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ActionRPG extends Game {
 	OrthographicCamera camera;
+	SpriteBatch spriteBatch;
 	LoadScreen loadScreen;
 	MenuScreen menuScreen;
 	GameScreen gameScreen;
@@ -20,8 +22,10 @@ public class ActionRPG extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 		
+		spriteBatch = new SpriteBatch();
+		
 		//Show loadScreen
-		setScreen(loadScreen);
+		setScreen(menuScreen);
 	}
 
 	@Override

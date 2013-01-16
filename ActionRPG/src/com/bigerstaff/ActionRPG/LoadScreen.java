@@ -17,7 +17,7 @@ public class LoadScreen implements Screen {
             Gdx.gl.glClearColor(0, 1f, 0, 1);
             Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
             game.camera.update();
-            
+            Gdx.app.log("LoadScreen", "loadscreen");
             //Show assetManager progress bar, and then move on to MenuScreen
         }
  
