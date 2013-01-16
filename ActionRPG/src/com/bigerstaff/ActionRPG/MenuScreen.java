@@ -22,7 +22,9 @@ public class MenuScreen implements Screen {
 			stage = new Stage();
 			playButtonTexture = new Texture(Gdx.files.internal("data/play.png"));
 			playButtonTextureRegion = new TextureRegion(playButtonTexture);
-			playButton = new PlayButton(playButtonTextureRegion, Gdx.graphics.getWidth()/2 - 600/2, Gdx.graphics.getHeight()/2 - 200/2, 600, 200, this.game);
+			playButton = new PlayButton(playButtonTextureRegion, Gdx.graphics.getWidth()/2 - 600/2, Gdx.graphics.getHeight()/2 - 200/2, 600, 200, this.game);		
+			
+			
 			stage.addActor(playButton);
 	        Gdx.input.setInputProcessor(stage);
         }       
@@ -39,6 +41,10 @@ public class MenuScreen implements Screen {
 		    stage.act(Gdx.graphics.getDeltaTime());
 		    stage.draw();
 			game.spriteBatch.end();
+			
+			if(playButton.isTouched){
+				game.setScreen(game.loadScreen);
+			}		
         }
  
 
