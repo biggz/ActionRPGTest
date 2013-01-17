@@ -17,16 +17,11 @@ public class MenuScreen implements Screen {
 		PlayButton playButton;
 
 		// constructor to keep a reference to the main Game class
-        public MenuScreen(ActionRPG game){
-        	this.game = game;
-			stage = new Stage();
+        public MenuScreen(ActionRPG tmpGame){
+        	this.game = tmpGame;
 			playButtonTexture = new Texture(Gdx.files.internal("data/play.png"));
 			playButtonTextureRegion = new TextureRegion(playButtonTexture);
-			playButton = new PlayButton(playButtonTextureRegion, Gdx.graphics.getWidth()/2 - 600/2, Gdx.graphics.getHeight()/2 - 200/2, 600, 200, this.game);		
-			
-			
-			stage.addActor(playButton);
-	        Gdx.input.setInputProcessor(stage);
+			playButton = new PlayButton(playButtonTextureRegion, Gdx.graphics.getWidth()/2 - 600/2, Gdx.graphics.getHeight()/2 - 200/2, 600, 200, this.game);
         }       
         
         @Override
@@ -37,13 +32,12 @@ public class MenuScreen implements Screen {
             
 			game.spriteBatch.setProjectionMatrix(game.camera.combined);
 			game.spriteBatch.begin();
-			//game.spriteBatch.draw(playButton, play.x, play.y);
 		    stage.act(Gdx.graphics.getDeltaTime());
 		    stage.draw();
 			game.spriteBatch.end();
 			
-			if(playButton.isTouched){
-				game.setScreen(game.loadScreen);
+			if(playButton.isTouched){			
+				game.setScreen(new GameScreen(game));
 			}		
         }
  
@@ -57,12 +51,16 @@ public class MenuScreen implements Screen {
        @Override
         public void show() {
     	   // called when this screen is set as the screen with game.setScreen();
+    	   stage = new Stage();
+    	   stage.addActor(playButton);			
+    	   Gdx.input.setInputProcessor(stage);
         }
  
 
        @Override
         public void hide() {
-             // called when current screen changes from this to a different screen
+           // called when current screen changes from this to a different screen
+    	   //stage.dispose();
         }
  
 
