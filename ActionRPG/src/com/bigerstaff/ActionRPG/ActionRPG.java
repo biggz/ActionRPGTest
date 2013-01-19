@@ -1,10 +1,8 @@
 package com.bigerstaff.ActionRPG;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class ActionRPG extends Game {
 	OrthographicCamera camera;
@@ -22,7 +20,7 @@ public class ActionRPG extends Game {
 		
 		//Camera set to 1280x720 world units to match resolution
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1280, 720);
+		camera.setToOrtho(false, 320, 180);
 		
 		spriteBatch = new SpriteBatch();
 		
