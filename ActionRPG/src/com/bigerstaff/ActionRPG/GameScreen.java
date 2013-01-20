@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
 	Player player;
 	float stateTime;
 	String playerState;
+	BSPTree level;
 	
    // constructor to keep a reference to the main Game class
     public GameScreen(ActionRPG tmpGame){
@@ -81,7 +82,12 @@ public class GameScreen implements Screen {
 		touchpadStyle.background = touchBackground;
 		touchpadStyle.knob = touchKnob;
 		touchpad = new Touchpad(10, touchpadStyle);
-		touchpad.setBounds(15, 15, 200, 200);	
+		touchpad.setBounds(15, 15, 200, 200);
+		
+		//Testing Level Generation
+		level = new BSPTree(32,32);
+		//level.PrintMap();
+		
     }
     
     @Override
