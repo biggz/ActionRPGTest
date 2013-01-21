@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
 		touchpad.setBounds(15, 15, 200, 200);
 		
 		//Testing Level Generation
-		level = new BSPTree(32,32);
+		level = new BSPTree(64,64);
 		//level.PrintMap();
 		
     }

@@ -37,8 +37,9 @@ public class MenuScreen implements Screen {
 			game.spriteBatch.end();
 			
 			if(playButton.isTouched){			
-				game.setScreen(new GameScreen(game));
-			}		
+				//game.setScreen(new GameScreen(game));
+				game.setScreen(new BSPScreen(game))
+;			}		
         }
  
 

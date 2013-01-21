@@ -3,10 +3,12 @@ package com.bigerstaff.ActionRPG;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class ActionRPG extends Game {
 	OrthographicCamera camera;
 	SpriteBatch spriteBatch;
+	ShapeRenderer shapeRenderer;
 	LoadScreen loadScreen;
 	MenuScreen menuScreen;
 	GameScreen gameScreen;
@@ -23,7 +25,7 @@ public class ActionRPG extends Game {
 		camera.setToOrtho(false, 320, 180);
 		
 		spriteBatch = new SpriteBatch();
-		
+		shapeRenderer = new ShapeRenderer();
 		//Show loadScreen
 		setScreen(new MenuScreen(this));
 	}
