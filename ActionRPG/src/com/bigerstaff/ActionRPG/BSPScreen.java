@@ -12,12 +12,13 @@ public class BSPScreen implements Screen {
 	private ActionRPG game;
 	private BSPTree level;
 	private Array<BSPCell> drawableBSPCells;
+    boolean print = true;
 
 	public BSPScreen(ActionRPG tmpGame){
 		game = tmpGame;
-		level = new BSPTree(16,16);
+		level = new BSPTree(64,64);
 		drawableBSPCells = level.GetDrawableCells();
-		game.camera.setToOrtho(false, 16, 16);
+		game.camera.setToOrtho(false, 64, 64);
 	}
 	
 	@Override
@@ -28,13 +29,15 @@ public class BSPScreen implements Screen {
         
         game.shapeRenderer.setProjectionMatrix(game.camera.combined); 
         game.shapeRenderer.begin(ShapeType.Box);      
-        System.out.print("Start Render\r");
+        
         for (BSPCell temp : drawableBSPCells){
         	game.shapeRenderer.setColor(0, 0, 1, 1);
-            game.shapeRenderer.box(temp.posX, temp.posY, 0f, temp.width, temp.height, 0f);
-            System.out.print("posX: " + temp.posX + " | posY: " + temp.posY + " | width: " + temp.width + " | height: " + temp.height + "\r");
+            game.shapeRenderer.box(temp.posX, temp.posY, 0f, temp.width, temp.height, 0f);            
+            if (print){
+            	System.out.print("posX: " + temp.posX + " | posY: " + temp.posY + " | width: " + temp.width + " | height: " + temp.height + "\r");
+            }
         }
-        System.out.print("End Render\r");
+        print = false;
         game.shapeRenderer.end();
     }
  

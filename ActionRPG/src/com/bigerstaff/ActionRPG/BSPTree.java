@@ -28,7 +28,7 @@ public class BSPTree {
 		//Create a single BSPCell at location 0,0 with width & height as specified in the constuctor. This is the size of the BSP tree
 		BSPCells.add(new BSPCell(0, 0, width, height));
 		//Iterate over the entire BSPCells array list, and create a splitBSPCells array list, only containing cells we need to split
-		for (int i = 0; i <= 1; i+=1){
+		for (int i = 0; i < 3; i+=1){
 			Iterator <BSPCell> iterBSPCells;
 			iterBSPCells = BSPCells.iterator();
 			while (iterBSPCells.hasNext()){
@@ -52,16 +52,15 @@ public class BSPTree {
 			}			
 		}
 		PrintCells(BSPCells);
-		PrintCellsAscii(BSPCells);
+		//PrintCellsAscii(BSPCells);
 	}
 	
 	//Given a BSP Cell, split in to two
 	private void SplitCell(BSPCell tempBSPCell, boolean horizontal){
 		int splitPoint = 0;
-		int gridShift = 1; //This is needed in certain places to keep the grid in check. This is because the grid starts on x=0, y=0
 		int horizontalVariance = GetVariance(tempBSPCell.height, 0.1f);
 		int verticalVariance = GetVariance(tempBSPCell.width, 0.1f);
-		
+
 		if (horizontal){
 			splitPoint = (tempBSPCell.height / 2) + MathUtils.random(0-horizontalVariance,horizontalVariance);
 			BSPCells.add(new BSPCell(tempBSPCell.posX, tempBSPCell.posY, tempBSPCell.width, splitPoint, tempBSPCell.level));
@@ -69,7 +68,7 @@ public class BSPTree {
 		}
 		else { //Vertical Split
 			splitPoint = (tempBSPCell.width / 2) + MathUtils.random(0-verticalVariance, verticalVariance);			
-			BSPCells.add(new BSPCell(tempBSPCell.posX, tempBSPCell.posY, tempBSPCell.width - splitPoint, tempBSPCell.height, tempBSPCell.level));
+			BSPCells.add(new BSPCell(tempBSPCell.posX, tempBSPCell.posY, splitPoint, tempBSPCell.height, tempBSPCell.level));
 			BSPCells.add(new BSPCell(tempBSPCell.posX + splitPoint, tempBSPCell.posY, tempBSPCell.width - splitPoint, tempBSPCell.height, tempBSPCell.level));			
 		}
 		//Increment current level, if a new level is created
@@ -118,7 +117,7 @@ public class BSPTree {
 			BSPCell iterBSPCell = iter.next();
 			for (int row = 0; row < iterBSPCell.width; row += 1){
 				for (int col = 0; col < iterBSPCell.height; col += 1){
-					if ( iterBSPCell.posX + row == iterBSPCell.posX || iterBSPCell.posX + row == iterBSPCell.posX + iterBSPCell.width-1 || iterBSPCell.posY + col == iterBSPCell.posY  || iterBSPCell.posY + col == iterBSPCell.posY + iterBSPCell.height-1 ) {
+					if ( iterBSPCell.posX + row == iterBSPCell.posX || iterBSPCell.posX + row == iterBSPCell.posX + iterBSPCell.width -1|| iterBSPCell.posY + col == iterBSPCell.posY  || iterBSPCell.posY + col == iterBSPCell.posY + iterBSPCell.height-1 ) {
 						if (iterBSPCell.posY + col == iterBSPCell.posY + iterBSPCell.height){
 							System.out.print("iterBSPCell.posY(" + iterBSPCell.posY + ") + col(" + col + ") == iterBSPCell.posY(" + iterBSPCell.posY + ") + iterBSPCell.height(" + iterBSPCell.height + ")\r"); 
 						}
