@@ -3,6 +3,7 @@ package com.bigerstaff.ActionRPG;
 import java.util.Iterator;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class BSPTree {
@@ -28,7 +29,7 @@ public class BSPTree {
 		//Create a single BSPCell at location 0,0 with width & height as specified in the constuctor. This is the size of the BSP tree
 		BSPCells.add(new BSPCell(0, 0, width, height));
 		//Iterate over the entire BSPCells array list, and create a splitBSPCells array list, only containing cells we need to split
-		for (int i = 0; i < 3; i+=1){
+		for (int i = 0; i <= 3; i+=1){
 			Iterator <BSPCell> iterBSPCells;
 			iterBSPCells = BSPCells.iterator();
 			while (iterBSPCells.hasNext()){
@@ -77,7 +78,7 @@ public class BSPTree {
 		}
 		splitPoint = 0;
 	}
-	
+		
 	//
 	private int GetVariance(int tempInt, float tempFloat) {
 		return MathUtils.round(tempInt * tempFloat);
@@ -89,52 +90,31 @@ public class BSPTree {
 		}
 	}
 	
-	private void PrintCellsAscii(Array<BSPCell> temp) {
+	public void PrintRoomsAscii(Array<Rectangle> rooms, int dimension) {
 		System.out.print("PrintCellsAscii();\r");
-		char coords[][] = new char[temp.first().width][temp.first().height];
-		//Find deepest level
-		int deepestLevel = 0;
-		for (BSPCell tempCell : temp){
-			if (tempCell.level > deepestLevel){
-				deepestLevel = tempCell.level;
+		char coords[][] = new char[dimension][dimension];
+		//Set all to #
+		for (int i = 0; i < coords.length; i+=1){
+			for (int j = 0; j < coords[0].length; j+=1){
+				coords[i][j] = '#';
 			}
 		}
-		//Put all cells with deepestLevel in to new array list
-		Array<BSPCell> drawBSPCells;
-		drawBSPCells = new Array<BSPCell>();
-		for (BSPCell tempCell : temp) {
-			if (tempCell.level == deepestLevel){
-				drawBSPCells.add(tempCell);
-			}
-			//System.out.print("drawBSPCells: " + drawBSPCells.size + "\r");
-		}
-		PrintCells(drawBSPCells);
-		//Iterate over drawBSPCells. Draw on coords[x][y] : # around the edge of the cell and leaving the rest empty.
-		Iterator <BSPCell> iter;
-		System.out.print("drawBSPCells: " + drawBSPCells.size + "\r");
-		iter = drawBSPCells.iterator();		
-		while (iter.hasNext()){
-			BSPCell iterBSPCell = iter.next();
-			for (int row = 0; row < iterBSPCell.width; row += 1){
-				for (int col = 0; col < iterBSPCell.height; col += 1){
-					if ( iterBSPCell.posX + row == iterBSPCell.posX || iterBSPCell.posX + row == iterBSPCell.posX + iterBSPCell.width -1|| iterBSPCell.posY + col == iterBSPCell.posY  || iterBSPCell.posY + col == iterBSPCell.posY + iterBSPCell.height-1 ) {
-						if (iterBSPCell.posY + col == iterBSPCell.posY + iterBSPCell.height){
-							System.out.print("iterBSPCell.posY(" + iterBSPCell.posY + ") + col(" + col + ") == iterBSPCell.posY(" + iterBSPCell.posY + ") + iterBSPCell.height(" + iterBSPCell.height + ")\r"); 
-						}
-						coords[iterBSPCell.posX+row][iterBSPCell.posY+col] = '#';
-					}
-					else {
-						coords[iterBSPCell.posX+row][iterBSPCell.posY+col] = '.';
-					}
+		//Carve out rooms with empty space
+		for (Rectangle room : rooms) {
+			for(int i = (int)room.x; i < room.x + room.width; i+=1){
+				for (int j = (int)room.y; j < room.y + room.height; j+=1){
+					coords[i][j] = ' ';
 				}
-			}	
+			}
 		}
-		for (int row = 0; row < coords.length; row += 1){
-			for (int col = 0; col < coords[0].length; col += 1){
-				System.out.print(coords[row][col]);
+		//Display 2D array
+		for (int i = 0; i < coords.length; i+=1){
+			for (int j = 0; j < coords[0].length; j+=1){
+				System.out.print(coords[i][j]);
 			}
 			System.out.print("\r");
 		}
+		
 	}
 	
 	public Array<BSPCell> GetDrawableCells(){		
@@ -152,5 +132,26 @@ public class BSPTree {
 			}
 		}		
 		return drawableBSPCells;
+	}
+	
+	public Array<Rectangle> GetRooms(Array<BSPCell> bspCells){
+		//For each cell, create a random sized rectangle that fits within it's bounds
+		Array<Rectangle> rooms = new Array<Rectangle>();
+		for ( BSPCell temp : bspCells ){
+			rooms.add(CreateRoom(temp));
+		}
+		return rooms;
+	}
+	
+	private Rectangle CreateRoom(BSPCell tempCell){
+		float minRatio = 0.6f;
+		float maxRatio = 0.8f;
+		int roomBuffer = 1; //size of space between room and cell boundry
+		int width = MathUtils.random((int)(tempCell.width*minRatio), (int)(tempCell.width*minRatio)); 
+		int height = MathUtils.random((int)(tempCell.height*minRatio), (int)(tempCell.height*maxRatio));
+		int x = MathUtils.random(tempCell.posX+roomBuffer, tempCell.posX + (tempCell.width - width)-roomBuffer);
+		int y = MathUtils.random(tempCell.posY+roomBuffer, tempCell.posY + (tempCell.height - height)-roomBuffer);
+		Rectangle room = new Rectangle(x, y, width, height);
+		return room;
 	}
 }

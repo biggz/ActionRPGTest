@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class BSPScreen implements Screen {
@@ -12,33 +13,45 @@ public class BSPScreen implements Screen {
 	private ActionRPG game;
 	private BSPTree level;
 	private Array<BSPCell> drawableBSPCells;
+	private Array<Rectangle> rooms;
     boolean print = true;
+    int BSPSize;
 
 	public BSPScreen(ActionRPG tmpGame){
 		game = tmpGame;
-		level = new BSPTree(64,64);
+		BSPSize = 128;
+		level = new BSPTree(BSPSize,BSPSize);
 		drawableBSPCells = level.GetDrawableCells();
-		game.camera.setToOrtho(false, 64, 64);
+		rooms = level.GetRooms(drawableBSPCells);
+		level.PrintRoomsAscii(rooms, BSPSize);
+		game.camera.setToOrtho(false, BSPSize, BSPSize);
 	}
 	
 	@Override
     public void render(float delta) {
     	Gdx.gl.glClearColor(0.294f, 0.294f, 0.294f, 1f);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        game.camera.update();
-        
-        game.shapeRenderer.setProjectionMatrix(game.camera.combined); 
-        game.shapeRenderer.begin(ShapeType.Box);      
-        
+        game.camera.update();        
+        game.shapeRenderer.setProjectionMatrix(game.camera.combined);                     
+        //Draw cell outlines
+        game.shapeRenderer.begin(ShapeType.Box);
+        game.shapeRenderer.setColor(1, 0, 0, 1);
         for (BSPCell temp : drawableBSPCells){
-        	game.shapeRenderer.setColor(0, 0, 1, 1);
             game.shapeRenderer.box(temp.posX, temp.posY, 0f, temp.width, temp.height, 0f);            
             if (print){
-            	System.out.print("posX: " + temp.posX + " | posY: " + temp.posY + " | width: " + temp.width + " | height: " + temp.height + "\r");
+            	//System.out.print("posX: " + temp.posX + " | posY: " + temp.posY + " | width: " + temp.width + " | height: " + temp.height + "\r");
             }
         }
-        print = false;
         game.shapeRenderer.end();
+        //Draw rooms
+        game.shapeRenderer.begin(ShapeType.FilledRectangle);
+        game.shapeRenderer.setColor(0, 0, 1, 1);
+        for (Rectangle room : rooms){
+        	game.shapeRenderer.filledRect(room.x, room.y, room.width, room.height);
+        }
+        game.shapeRenderer.end();
+        print = false;
+        
     }
  
 
