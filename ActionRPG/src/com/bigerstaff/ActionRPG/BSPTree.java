@@ -9,13 +9,14 @@ import com.badlogic.gdx.utils.Array;
 public class BSPTree {
 	Array<BSPCell> BSPCells, splitBSPCells;
 	Iterator<BSPCell> iterSplitBSPCells;
-	int width, height, currentLevel, minSplit;
+	int width, height, currentLevel, minSplit, BSPBranches;
 	private Array<BSPCell> drawableBSPCells;
 	
-	public BSPTree(int width, int height){
+	public BSPTree(int width, int height, int branches){
 		this.width = width;
 		this.height = height;
 		this.currentLevel = 1;
+		this.BSPBranches = branches;
 		minSplit = 3; //Used to determine split point.
 		drawableBSPCells = new Array<BSPCell>();
 		CreateCells();
@@ -29,7 +30,7 @@ public class BSPTree {
 		//Create a single BSPCell at location 0,0 with width & height as specified in the constuctor. This is the size of the BSP tree
 		BSPCells.add(new BSPCell(0, 0, width, height));
 		//Iterate over the entire BSPCells array list, and create a splitBSPCells array list, only containing cells we need to split
-		for (int i = 0; i <= 3; i+=1){
+		for (int i = 0; i < BSPBranches; i+=1){
 			Iterator <BSPCell> iterBSPCells;
 			iterBSPCells = BSPCells.iterator();
 			while (iterBSPCells.hasNext()){
